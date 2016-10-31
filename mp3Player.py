@@ -32,24 +32,42 @@ class StartPage(tk.Frame):
 
     def __init__(self,parent,controller):
         def Play():
-            global URLin
-            URLin = url_entry.get()
-            print(URLin)
+            print("play")
+
+        def Pause():
+            print("Pause")
+
+        def Browse():
+            global filePath
+            filename = filedialog.askopenfilename()
+            filePath = filename
+            file_label = ttk.Label(self,text = filePath, font = LARGE_FONT)
+            file_label.place(x = 0, y = 325)
+
+            print(filePath)
+
         tk.Frame.__init__(self,parent)
-        label = ttk.Label(self,text = "MP3Player", font = LARGE_FONT)
+        label = ttk.Label(self,text = "MP3 Player", font = LARGE_FONT)
         label.pack(pady = 10, padx = 10)
 
-        size_label = ttk.Label(self,text = "Play", font = LARGE_FONT)
-        size_label.place(x = 40, y = 20)
+        play = ttk.Button(self,text = "Play", command = Play)
+        play.place(x = 40, y = 40)
 
-        submit1 = ttk.Button(self,text = "Play", command = Play)
-        submit1.place(x = 40, y = 25)
+        pause = ttk.Button(self,text = "Pause", command = Pause)
+        pause.place(x = 160, y = 40)
 
+        pg = ttk.Progressbar(self, orient='horizontal',length=300, mode='determinate')
+        pg.place(x = 40, y = 70)
+
+
+
+        FileBrowse = ttk.Button(self,text = "Browse",command = Browse)
+        FileBrowse.place(x = 40, y= 100)
 
 
 
 
 
 app = MP3Player()
-app.geometry("500x500")
+app.geometry("500x200")
 app.mainloop()
