@@ -1,12 +1,15 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
-from tkinter import*
+
+from tkinter import *
 import os, shutil
 
 LARGE_FONT = ("Verdana", 12)
 filePath = []
-i = 0
+filelist = []
+value = 0
+x = 0
 
 class MP3Player(tk.Tk):
 
@@ -53,15 +56,18 @@ class StartPage(tk.Frame):
             print("Prepare for some emo tunes.")
         def Browse():
             global filePath
-
+            global x
+            x = 0
+            del filelist[:]
             filename = filedialog.askopenfilename()
-            filePath.append(filename)
-            a = 150
-            b = 220+(i*50)
-            file_label = ttk.Label(self,text = filePath, font = LARGE_FONT)
-            file_label.place(x = a, y = b)
-            print(filename)
-            print(filePath)
+            filelist.append(filename)
+            for i in filelist:
+                filePath.append(Label(self,text= i, font = LARGE_FONT))
+            for j in filePath:
+                j.place(x = 200, y = 250+(x*30))
+                x = x + 1
+            print (filePath)
+            print('\n\n')
 
         tk.Frame.__init__(self,parent)
         label = ttk.Label(self,text = "Volume", font = LARGE_FONT)
@@ -71,7 +77,7 @@ class StartPage(tk.Frame):
         labelStartStop.place(x = 20, y = 20)
 
         labelList = ttk.Label(self, text = "Music Play List: ", font = LARGE_FONT)
-        labelList.place(x = 700, y = 20)
+        labelList.place(x = 40, y = 220)
 
         play = ttk.Button(self,text = "Play", command = Play)
         play.place(x = 40, y = 60)
@@ -83,8 +89,8 @@ class StartPage(tk.Frame):
         pg.place(x = 40, y = 110)
 
 
-        FileBrowse = ttk.Button(self,text = "Browse",command = Browse)
-        FileBrowse.place(x = 40, y= 220)
+        FileBrowse = ttk.Button(self,text = "Browse for Music",command = Browse)
+        FileBrowse.place(x = 40, y = 250)
 
         labelChoose = ttk.Label(self,text = "Choose a theme: ", font = LARGE_FONT)
         labelChoose.place(x = 40, y = 150)
@@ -103,10 +109,11 @@ class StartPage(tk.Frame):
         emo = ttk.Button(self,text = "Emo", command = Emo)
         emo.place(x = 400, y = 190)
 
-        Slider1 = Scale(self, orient = HORIZONTAL, length = 300,width = 20, sliderlength = 10, from_ = 0, to = 100).pack()
+        Slider1 = Scale(self, orient = HORIZONTAL, length = 100,width = 10, sliderlength = 10, from_ = 0, to = 100).pack()
         #Slider1.place (x = 250, y = 40)
 
 
 app = MP3Player()
 app.geometry("1000x400")
 app.mainloop()
+
