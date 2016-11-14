@@ -70,8 +70,7 @@ class StartPage(tk.Frame):
             print('\n\n')
 
         tk.Frame.__init__(self,parent)
-        label = ttk.Label(self,text = "Volume", font = LARGE_FONT)
-        label.pack(pady = 20, padx = 10)
+
 
         labelStartStop = ttk.Label(self, text = "Press start to play audio. Press pause to stop audio.", font = LARGE_FONT)
         labelStartStop.place(x = 20, y = 20)
@@ -109,11 +108,12 @@ class StartPage(tk.Frame):
         emo = ttk.Button(self,text = "Emo", command = Emo)
         emo.place(x = 400, y = 190)
 
-        Slider1 = Scale(self, orient = HORIZONTAL, length = 100,width = 10, sliderlength = 10, from_ = 0, to = 100).pack()
-        #Slider1.place (x = 250, y = 40)
+        label = ttk.Label(self,text = "Volume", font = LARGE_FONT)
+        label.place(x = 350, y = 20)
+        Slider1 = Scale(self, orient = HORIZONTAL, length = 100,width = 10, sliderlength = 10, from_ = 0, to = 100)
+        Slider1.place (x = 350, y = 40)
 
 
 app = MP3Player()
-app.geometry("1000x400")
+app.geometry("600x400")
 app.mainloop()
-
