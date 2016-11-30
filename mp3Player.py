@@ -15,6 +15,7 @@ filelist = []
 radio = []
 value = 0
 x = 0
+song = 0
 
 
 class MP3Player(tk.Tk):
@@ -43,8 +44,18 @@ class MP3Player(tk.Tk):
 class StartPage(tk.Frame):
 
     def __init__(self,parent,controller):
+
+        def Fn(self, v):
+            result = self._oldvalue
+            self._oldvalue = v
+            pygame.mixer.music.load(filePath[result])
+            print(filePath[result])
+
         def Play():
+            print (filePath[song])
             print("play")
+            # pygame.mixer.music.load('/Users/jasonfitzgerald/Desktop/cst205/project3/bma.mp3')
+
             pygame.mixer.music.play()
 
         def Pause():
@@ -78,15 +89,18 @@ class StartPage(tk.Frame):
             for j in filePath:
                 j.place(x = 200, y = 250+(x*30))
                 x = x + 1
-            print (filePath)
-            print (filelist)
+            # print (filePath)
+            # print (filelist)
             print('\n\n')
 
             labelM = tk.Label(self, text = "Pick a song: ", font = LARGE_FONT)
             labelM.place(x = 40, y = 280)
 
-            SpinBox  = Spinbox( self,from_ = 0, to = len(filePath),textvariable = filePath, wrap = TRUE, state = 'readonly', width = 5 )
+            SpinBox  = Spinbox( self,from_ = 0, to = len(filePath), command=lambda:self.Fn(val.get()), width = 5 )
             SpinBox.place (x = 120, y = 280)
+
+
+
 
 
         tk.Frame.__init__(self,parent)
@@ -152,7 +166,7 @@ def Audio():
     # pygame.mixer.pre_init(44100, 16, 2, 2048)
     #  frequency, size, channels, bufferSize
     # pygame.mixer.music.load('C:/tmp/MediaPLayer/BMA.wav')
-    pygame.mixer.music.load('/Users/jasonfitzgerald/Desktop/cst205/project3/bma.mp3')
+    # pygame.mixer.music.load('/Users/jasonfitzgerald/Desktop/cst205/project3/bma.mp3')
     clock = pygame.time.Clock()
     clock.tick(10)
     while pygame.mixer.music.get_busy():
@@ -162,4 +176,3 @@ def Audio():
 app = MP3Player()
 app.geometry("800x400")
 app.mainloop()
-
