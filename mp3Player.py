@@ -2,6 +2,8 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import *
+import tkinter.messagebox
+
 from PIL import Image, ImageTk
 import numpy as np
 import pygame
@@ -9,10 +11,12 @@ import sys
 import os, shutil
 from pygame.locals import *
 
+
 LARGE_FONT = ("Verdana", 12)
 fileLabel = []
 filelist = []
 filebase = []
+radio = []
 value = 0
 x = 0
 song = 0
@@ -44,7 +48,7 @@ class MP3Player(tk.Tk):
 
 class StartPage(tk.Frame):
 
-    def __init__(self,parent,controller):
+    def __init__(self,parent,root):
         pygame.init()
         global value
         global song
@@ -55,6 +59,7 @@ class StartPage(tk.Frame):
 
         def Play():
             print("play")
+
             pygame.mixer.music.play()
             pg.start()
             pg.configure( mode='determinate', value = pygame.mixer.music.get_pos())
@@ -85,31 +90,49 @@ class StartPage(tk.Frame):
             print("Prepare for some emo tunes.")
             # pygame.mixer.music.load("Stan [Live].wav")
 
-        def Choice():
+        def Choice(event):
+            song = int(entry.get())
             print(song)
+            print(filelist)
             pygame.mixer.music.load(filelist[song])
+        def MakeRadio(filebase,filelist,fileLabel):
+            global song
+            global radio
+            global x
 
+            x = 0
+            for i in filebase:
+                pg.stop()
+                pygame.mixer.music.pause()
+                fileLabel.append(Label(self,text=i, font=LARGE_FONT))
+                radio.append(Radiobutton(self,value=filelist,variable=song))
+
+            #     r = Radiobutton(self,text=filebase,variable=song,value=filelist)
+            #     r.bind("<Button-1>",Choice)
+            # for t in r:
+            #     t.place(x = 180, y = 250+(x*30))
+            #     x = x + 1
+
+            for t in radio:
+                t.place(x = 180, y = 250+(x*30))
+                x = x + 1
+            x = 0
+            for j in fileLabel:
+                j.place(x = 210, y = 250+(x*30))
+                x = x + 1
         def Browse():
             global fileLabel
             global filelist
             global filebase
-            global x
-            x = 0
-            del filelist[:]
+
+            # del filelist[:]
             del filebase[:]
             filename = filedialog.askopenfilename()
             filelist.append(filename)
             base = os.path.basename(filename)
             filebase.append(base)
-            for i in filebase:
-                pg.stop()
-                pygame.mixer.music.pause()
-                fileLabel.append(Label(self,text=i, font=LARGE_FONT))
-                r = Radiobutton(self,text=filebase,variable=song,command=Choice,value=filelist)
-            for j in fileLabel:
-                r.place(x = 180, y = 250+(x*30))
-                j.place(x = 200, y = 250+(x*30))
-                x = x + 1
+            MakeRadio(filebase,filelist,fileLabel)
+
 
         def Mute():
             print("mute")
@@ -161,6 +184,22 @@ class StartPage(tk.Frame):
 
         sad = tk.Button(self,text = "Sad", command = Sad)
         sad.place(x = 400, y = 190)
+
+        labelChooses = tk.Label(self,text = "Pick a song: ", font = LARGE_FONT)
+        labelChooses.place(x = 30, y = 300)
+
+        ok = tk.Button(self,text = "submit")
+        ok.bind("<Button-1>",Choice)
+        ok.place(x = 30, y = 320)
+
+        entry = Entry(self, width = 1)
+        entry.place(x = 100, y = 320)
+
+
+
+
+
+
 
 app = MP3Player()
 app.geometry("600x400")
